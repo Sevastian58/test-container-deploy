@@ -1,0 +1,40 @@
+version: '3.5'
+services:
+  flyway:
+    image: flyway/flyway
+    command: -url='jdbc:mysql://mysql:3306/teslo?allowPublicKeyRetrieval=true&permitMysqlScheme=true' -schemas=teslo -user=admin -password=admin -baselineOnMigrate=true -connectRetries=60 migrate
+    volumes:
+      - ./src/migrations:/flyway/sql
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - teslo-network
+
+  mysql:
+    image: mysql:8.0.36
+    container_name: mysql_teslo
+    environment:
+      - MYSQL_DATABASE=teslo
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_ROOT_PASSWORD=root
+    command: --sql_generate_invisible_primary_key=ON
+    volumes:
+      - teslo-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - teslo-network
+    restart: unless-stopped
+    healthcheck:
+      test: "mysql -h mysql -uadmin -padmin teslo -e 'SELECT 1;'"
+      interval: 10s
+      retries: 10
+
+networks:
+  teslo-network:
+    driver: bridge
+
+volumes:
+  teslo-volume:
