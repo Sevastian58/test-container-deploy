@@ -1,0 +1,16 @@
+version: '3.5'
+services:
+  flyway:
+    image: flyway/flyway
+    command: -url=${DATABASE_URL} -schemas=teslo -user=admin -password=${DATABASE_PASSWORD} -baselineOnMigrate=true -connectRetries=60 migrate
+    volumes:
+      - ./src/migrations:/flyway/sql
+    networks:
+      - teslo-network
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+
+networks:
+  teslo-network:
+    driver: bridge
