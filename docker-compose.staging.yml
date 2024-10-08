@@ -2,7 +2,7 @@ version: '3.5'
 services:
   flyway:
     image: flyway/flyway
-    command: -url='jdbc:mysql://teslo2.mysql.database.azure.com:3306/teslo2?user=teslo@teslo2&password=@Contamype' -baselineOnMigrate=true -connectRetries=60 migrate
+    command: -url='jdbc:mysql://teslo2.mysql.database.azure.com:3306/teslo2?&useSSL=true&user=teslo@teslo2&password=@Contamype' -baselineOnMigrate=true -connectRetries=60 migrate
     volumes:
       - ./src/migrations:/flyway/sql
     networks:
