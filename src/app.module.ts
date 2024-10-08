@@ -15,7 +15,10 @@ import { Product } from './products/entities/product.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       synchronize: false,
-      entities:[Product]
+      entities:[Product],
+      ssl: {
+        rejectUnauthorized: true,
+    },
     }),
 
     ProductsModule,
