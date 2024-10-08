@@ -11,7 +11,7 @@ on:
 env:
   NODE_VERSION: '18.x'
   REGISTRY: ghcr.io
-  IMAGE_NAME: jmv-lightning/conta-mype-be
+  IMAGE_NAME: teslo
   DATABASE_URL: ${{ vars.DATABASE_URL }}
 
 jobs:
@@ -81,7 +81,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -92,9 +92,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-            SESSION_SECRET_KEY=${{ secrets.SESSION_SECRET_KEY }}
-            FIND_RUC_TOKEN=${{ secrets.FIND_RUC_TOKEN }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
