@@ -1,4 +1,4 @@
-name: Staging BE release
+name: Staging BE release without docker
 
 on:
   workflow_dispatch:
