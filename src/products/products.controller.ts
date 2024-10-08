@@ -28,7 +28,7 @@ export class ProductsController {
 
   @Get('test')
   test() {
-    return 'helllo soy un test';
+    return 'helllo soy un test, pero el segundo';
   }
 
   @Delete(':id')
