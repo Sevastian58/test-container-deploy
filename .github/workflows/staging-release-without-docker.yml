@@ -1,0 +1,85 @@
+name: Staging BE release
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    types: [closed]
+  
+env:
+  NODE_VERSION: '18.x'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: Sevastian58/test-container-deploy
+  DATABASE_URL: ${{ vars.DATABASE_URL }}
+
+
+jobs:
+#   build-image:
+#     if: (github.event_name == 'push' && github.ref != 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+#     runs-on: ubuntu-latest
+#     environment: staging
+
+#     permissions:
+#       contents: read
+#       packages: write
+
+#     steps:
+#       - name: 'Checkout repository'
+#         uses: actions/checkout@v4
+
+#       - name: Use Node.js ${{ env.NODE_VERSION }}
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: ${{ env.NODE_VERSION }}
+
+#       - name: Install dependencies
+#         run: yarn install
+
+#       - name: Build project
+#         run: yarn build
+
+  build-publish-image:
+    if: (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: staging
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build project
+        run: yarn build
+
+      - name: Archive production artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: ./dist
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./dist
+
+      - name: Run Flyway Migrations
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          DATABASE_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          docker compose -f docker-compose.staging.yml up flyway
