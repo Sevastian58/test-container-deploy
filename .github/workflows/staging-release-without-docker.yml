@@ -16,29 +16,29 @@ env:
 
 
 jobs:
-#   build-image:
-#     if: (github.event_name == 'push' && github.ref != 'refs/heads/main') || github.event_name == 'workflow_dispatch'
-#     runs-on: ubuntu-latest
-#     environment: staging
+  build-image:
+    if: (github.event_name == 'push' && github.ref != 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: staging
 
-#     permissions:
-#       contents: read
-#       packages: write
+    permissions:
+      contents: read
+      packages: write
 
-#     steps:
-#       - name: 'Checkout repository'
-#         uses: actions/checkout@v4
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
 
-#       - name: Use Node.js ${{ env.NODE_VERSION }}
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: ${{ env.NODE_VERSION }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-#       - name: Install dependencies
-#         run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-#       - name: Build project
-#         run: yarn build
+      - name: Build project
+        run: yarn build
 
   build-publish-image:
     if: (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main') || github.event_name == 'workflow_dispatch'
