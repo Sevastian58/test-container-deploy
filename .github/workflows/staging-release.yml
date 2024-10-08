@@ -11,7 +11,7 @@ on:
 env:
   NODE_VERSION: '18.x'
   REGISTRY: ghcr.io
-  IMAGE_NAME: teslo
+  IMAGE_NAME: Sevastian58/test-container-deploy
   DATABASE_URL: ${{ vars.DATABASE_URL }}
 
 jobs:
