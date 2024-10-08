@@ -2,14 +2,14 @@ version: '3.5'
 services:
   flyway:
     image: flyway/flyway
-    command: -url=${DATABASE_URL} -schemas=teslo -user=admin -password=${DATABASE_PASSWORD} -baselineOnMigrate=true -connectRetries=60 migrate
+    command: -url='jdbc:sqlserver://teslo.database.windows.net:1433;database=teslo;user=teslo@teslo;password=@Contamype;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;' -baselineOnMigrate=true -connectRetries=60 migrate
     volumes:
       - ./src/migrations:/flyway/sql
     networks:
       - teslo-network
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    # environment:
+    #   - DATABASE_URL=${DATABASE_URL}
+    #   - DATABASE_PASSWORD=${DATABASE_PASSWORD}
 
 networks:
   teslo-network:
