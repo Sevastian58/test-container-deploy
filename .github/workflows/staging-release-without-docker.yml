@@ -11,7 +11,7 @@ on:
 env:
   NODE_VERSION: '18.x'
   DATABASE_URL: ${{ vars.DATABASE_URL }}
-  AZURE_WEBAPP_NAME: test-code-3   # set this to your application's name
+  AZURE_WEBAPP_NAME: test-code-4   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 
