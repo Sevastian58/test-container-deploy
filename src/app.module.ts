@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
@@ -15,13 +15,21 @@ import { Product } from './products/entities/product.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       synchronize: false,
-      entities:[Product],
+      entities: [Product],
       ssl: {
         rejectUnauthorized: true,
-    },
+      },
     }),
 
     ProductsModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  private readonly logger = new Logger(AppModule.name);
+  async onModuleInit() {
+    while (true) {
+      this.logger.log('No messages to process.');
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
+  }
+}
