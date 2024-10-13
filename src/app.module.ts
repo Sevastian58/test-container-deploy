@@ -27,8 +27,9 @@ import { Product } from './products/entities/product.entity';
 export class AppModule implements OnModuleInit {
   private readonly logger = new Logger(AppModule.name);
   async onModuleInit() {
+    const port = process.env.PORT;
     while (true) {
-      this.logger.log('No messages to process.');
+      this.logger.log(`No messages to process. ${port}`);
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
