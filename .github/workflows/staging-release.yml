@@ -100,7 +100,7 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           images: ${{steps.meta.outputs.tags}}
 
-      - name: Run Flyway Migration
+      - name: Run Flyway Migrations
         env:
           DATABASE_URL: ${{ env.DATABASE_URL }}
           DATABASE_PASSWORD: ${{ secrets.DB_PASSWORD }}
