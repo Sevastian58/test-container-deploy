@@ -13,7 +13,9 @@ export class ProductsController {
 
   @Get()
   findAll() {
-    return this.productsService.findAll();
+    const key_value = process.env.KEY_VALUE;
+    return key_value;
+    //return this.productsService.findAll();
   }
 
   @Delete(':id')
