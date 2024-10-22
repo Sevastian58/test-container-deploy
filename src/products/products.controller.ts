@@ -14,7 +14,7 @@ export class ProductsController {
   @Get()
   findAll() {
     const key_value = process.env.keyValue;
-    return 'el token es'+ key_value;
+    return 'el token es '+ key_value;
     //return this.productsService.findAll();
   }
 
